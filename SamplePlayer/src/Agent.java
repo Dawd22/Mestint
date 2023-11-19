@@ -1,5 +1,5 @@
+//Dawd,szaniszlodavid07@gmail.com
 import java.util.*;
-
 import game.racetrack.Direction;
 import game.racetrack.RaceTrackGame;
 import game.racetrack.RaceTrackPlayer;
@@ -15,11 +15,15 @@ public class Agent extends RaceTrackPlayer {
 
         return shortest();
     }
-
+    /**
+     * Megkeressük a pálya végét és meghívja az A* algoritmust
+     *
+     * @return Visszaadja a legrövidebb út fele vezető írányt 
+     **/
     public Direction shortest(){
         int goalX = -1;
         int goalY = -1;
-        // Keressük meg a célt (RaceTrackGame.FINISH cella)
+        // Keressük meg a célt (RaceTrackGame.FINISH cella, ami = 5 )
         for (int i = 0; i < track.length; i++) {
             for (int j = 0; j < track[0].length; j++) {
                 if (track[i][j] == 5) {
@@ -92,16 +96,6 @@ public class Agent extends RaceTrackPlayer {
                 int nextY = y + dir.j;
                 if (isValid(nextX, nextY) && !closedSet[nextX][nextY] && !isWall(nextX, nextY)) {
                     int newCost = currentNode.cost + 1;
-                    if (isCoin(nextX, nextY)) {
-                        newCost -= 5;
-                    }
-                    else if(isNearCoin(nextX, nextY)){
-                        newCost-=3;
-                    }
-                    else if (isNearWall(nextX, nextY)) {
-                        newCost += 5;
-                    }
-
                     Node nextNode = new Node(nextX, nextY, newCost, currentNode, calculateHeuristic(nextX, nextY, goalX, goalY));
                     boolean isInOpenSet = false;
                     for (Node node : openSet) {
